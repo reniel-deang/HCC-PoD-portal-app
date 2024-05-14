@@ -5,31 +5,26 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'success.dart';
 import 'verify.dart';
-import 'viewinfo.dart';
-import 'welcome.dart';
 
-
-void main(){
-  runApp(MaterialApp(home: Welcome(),debugShowCheckedModeBanner: false,));
-}
 
 enum UserType { student, employee, visitor }
 
-
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+class ViewInformation extends StatefulWidget {
+  const ViewInformation({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<ViewInformation> createState() => _ViewInformationState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _ViewInformationState extends State<ViewInformation> {
 
-  bool _privacy = false;
+
 
   DateTime? _selectedDate;
 
   TimeOfDay? _selectedTime;
+  TextEditingController incidentdescrip = TextEditingController();
+  TextEditingController idenity = TextEditingController();
   TextEditingController locationincident = TextEditingController();
   TextEditingController fullname = TextEditingController();
   TextEditingController coursegradesec = TextEditingController();
@@ -37,8 +32,6 @@ class _HomepageState extends State<Homepage> {
   TextEditingController phonenumber = TextEditingController();
   TextEditingController dateinput = TextEditingController();
   UserType? _userType;
-
-
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -73,18 +66,7 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(242, 243, 245, 1),
       appBar: AppBar(
-        toolbarHeight: 80,
-        backgroundColor: Color.fromRGBO(242, 243, 245, 1),
-        title: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/hcclogo.png',height: 50,),
-              Text('Holy Cross College',textAlign: TextAlign.center,),
-              SizedBox(width: 15,),
-            ],
-          ),
-        ),
+        backgroundColor: Colors.transparent,
       ),
 
       body: SingleChildScrollView(
@@ -94,8 +76,9 @@ class _HomepageState extends State<Homepage> {
               child: Center(
                 child: Column(
                   children: [
-                    Text('Student Discipline Services Division',style: TextStyle(color: Colors.blue),),
-                    Text('INCIDENT REPORT FORM',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+
+                    SizedBox(height: 10,),
+                    Text('(Check if your informations are correct.)',style: TextStyle(fontSize: 20),),
                   ],
                 ),
               ),
@@ -131,14 +114,24 @@ class _HomepageState extends State<Homepage> {
                         SizedBox(width: 10,),
                       ],
                     ),
+
+
                     TextField(
+                      readOnly: true, // Make the TextField read-only
                       maxLines: null,
                       controller: fullname,
+                      style: TextStyle(color: Colors.black87), // Set text color to black
                       decoration: InputDecoration(
-                        //hintText: 'ex. Dela Cruz, Juan, Ponce',
+                        hintText: '',
                         border: UnderlineInputBorder(),
+                        disabledBorder: UnderlineInputBorder( // Define disabled border style
+                          borderSide: BorderSide(color: Colors.grey), // Set border color for disabled state
+                        ),
+                        suffixIcon: Icon(Icons.edit_off_rounded, color: Colors.grey), // Optional: Add lock icon to indicate disabled state
                       ),
                     ),
+
+
                     SizedBox(height: 15,),
 
                     Row(
@@ -149,11 +142,17 @@ class _HomepageState extends State<Homepage> {
                     ),
 
                     TextField(
+                      readOnly: true, // Make the TextField read-only
                       maxLines: null,
                       controller: coursegradesec,
+                      style: TextStyle(color: Colors.black87), // Set text color to black
                       decoration: InputDecoration(
-                        //hintText: 'ex. BSCS-3A',
+                        hintText: '',
                         border: UnderlineInputBorder(),
+                        disabledBorder: UnderlineInputBorder( // Define disabled border style
+                          borderSide: BorderSide(color: Colors.grey), // Set border color for disabled state
+                        ),
+                        suffixIcon: Icon(Icons.edit_off_rounded, color: Colors.grey), // Optional: Add lock icon to indicate disabled state
                       ),
                     ),
 
@@ -165,12 +164,19 @@ class _HomepageState extends State<Homepage> {
                         SizedBox(width: 10,),
                       ],
                     ),
+
                     TextField(
+                      readOnly: true, // Make the TextField read-only
                       maxLines: null,
                       controller: address,
+                      style: TextStyle(color: Colors.black87), // Set text color to black
                       decoration: InputDecoration(
-                        //hintText: 'Complete Address',
+                        hintText: '',
                         border: UnderlineInputBorder(),
+                        disabledBorder: UnderlineInputBorder( // Define disabled border style
+                          borderSide: BorderSide(color: Colors.grey), // Set border color for disabled state
+                        ),
+                        suffixIcon: Icon(Icons.edit_off_rounded, color: Colors.grey), // Optional: Add lock icon to indicate disabled state
                       ),
                     ),
 
@@ -183,7 +189,9 @@ class _HomepageState extends State<Homepage> {
                       ],
                     ),
 
+
                     TextField(
+                      readOnly: true,
                       maxLines: null,
                       keyboardType: TextInputType.phone, // Set keyboard type to phone
                       inputFormatters: [
@@ -192,8 +200,12 @@ class _HomepageState extends State<Homepage> {
                       ],
                       controller: phonenumber,
                       decoration: InputDecoration(
-                        //hintText: 'ex. 09123456789',
+                        hintText: '',
                         border: UnderlineInputBorder(),
+                        disabledBorder: UnderlineInputBorder( // Define disabled border style
+                          borderSide: BorderSide(color: Colors.grey), // Set border color for disabled state
+                        ),
+                        suffixIcon: Icon(Icons.edit_off_rounded, color: Colors.grey),
                       ),
                     ),
 
@@ -208,39 +220,19 @@ class _HomepageState extends State<Homepage> {
                           ],
                         ),
                         SizedBox(height: 10,),
-                        Wrap(
-                          children: [
-                            RadioListTile<UserType>(
-                              title: Text('Student'),
-                              value: UserType.student,
-                              groupValue: _userType,
-                              onChanged: (UserType? value) {
-                                setState(() {
-                                  _userType = value;
-                                });
-                              },
+                        TextField(
+                          readOnly: true, // Make the TextField read-only
+                          maxLines: null,
+                          controller: idenity,
+                          style: TextStyle(color: Colors.black87), // Set text color to black
+                          decoration: InputDecoration(
+                            hintText: '',
+                            border: UnderlineInputBorder(),
+                            disabledBorder: UnderlineInputBorder( // Define disabled border style
+                              borderSide: BorderSide(color: Colors.grey), // Set border color for disabled state
                             ),
-                            RadioListTile<UserType>(
-                              title: Text('Employee'),
-                              value: UserType.employee,
-                              groupValue: _userType,
-                              onChanged: (UserType? value) {
-                                setState(() {
-                                  _userType = value;
-                                });
-                              },
-                            ),
-                            RadioListTile<UserType>(
-                              title: Text('Visitor'),
-                              value: UserType.visitor,
-                              groupValue: _userType,
-                              onChanged: (UserType? value) {
-                                setState(() {
-                                  _userType = value;
-                                });
-                              },
-                            ),
-                          ],
+                            suffixIcon: Icon(Icons.edit_off_rounded, color: Colors.grey), // Optional: Add lock icon to indicate disabled state
+                          ),
                         ),
                       ],
                     ),
@@ -284,13 +276,18 @@ class _HomepageState extends State<Homepage> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    InkWell(
-                      onTap: () => _selectDate(context),
+                    GestureDetector(
+                      onTap: () {}, // Disable onTap callback to make it not tappable
                       child: AbsorbPointer(
                         child: TextFormField(
+                          readOnly: true, // Set the TextFormField to read-only
                           decoration: InputDecoration(
-                            hintText: 'Select Date',
+                            hintText: 'Selected Date',
                             border: UnderlineInputBorder(),
+                            disabledBorder: UnderlineInputBorder( // Define disabled border style
+                              borderSide: BorderSide(color: Colors.grey), // Set border color for disabled state
+                            ),
+                            suffixIcon: Icon(Icons.edit_off_rounded, color: Colors.grey), // Add suffix icon to indicate read-only state
                           ),
                           controller: TextEditingController(
                             text: _selectedDate == null ? '' : _selectedDate.toString().substring(0, 10),
@@ -298,6 +295,9 @@ class _HomepageState extends State<Homepage> {
                         ),
                       ),
                     ),
+
+
+
                   ],
                 ),
               ),
@@ -317,13 +317,18 @@ class _HomepageState extends State<Homepage> {
                         ],
                       ),
                       SizedBox(height: 20),
-                      InkWell(
-                        onTap: () => _selectTime(context), // Open the time picker dialog
+                      GestureDetector(
+                        onTap: () {}, // Disable onTap callback to make it not tappable
                         child: AbsorbPointer(
                           child: TextFormField(
+                            readOnly: true,
                             decoration: InputDecoration(
-                              hintText: 'Select Time',
+                              hintText: 'Selected Time',
                               border: UnderlineInputBorder(),
+                              disabledBorder: UnderlineInputBorder( // Define disabled border style
+                                borderSide: BorderSide(color: Colors.grey), // Set border color for disabled state
+                              ),
+                              suffixIcon: Icon(Icons.edit_off_rounded, color: Colors.grey),
                             ),
                             controller: TextEditingController(
                               text: _selectedTime == null ? '' : _selectedTime!.format(context),
@@ -331,6 +336,7 @@ class _HomepageState extends State<Homepage> {
                           ),
                         ),
                       ),
+
                     ],
                   ),
                 ),
@@ -352,11 +358,17 @@ class _HomepageState extends State<Homepage> {
                     ),
 
                     TextField(
+                      readOnly: true, // Make the TextField read-only
                       maxLines: null,
                       controller: locationincident,
+                      style: TextStyle(color: Colors.black87), // Set text color to black
                       decoration: InputDecoration(
-                        hintText: 'Be specific',
+                        hintText: '',
                         border: UnderlineInputBorder(),
+                        disabledBorder: UnderlineInputBorder( // Define disabled border style
+                          borderSide: BorderSide(color: Colors.grey), // Set border color for disabled state
+                        ),
+                        suffixIcon: Icon(Icons.edit_off_rounded, color: Colors.grey), // Optional: Add lock icon to indicate disabled state
                       ),
                     ),
 
@@ -368,51 +380,19 @@ class _HomepageState extends State<Homepage> {
                       ],
                     ),
                     TextField(
+                      readOnly: true, // Make the TextField read-only
                       maxLines: null,
+                      controller: incidentdescrip,
+                      style: TextStyle(color: Colors.black87), // Set text color to black
                       decoration: InputDecoration(
-                        hintText: 'What happened or factors leading to the incident',
+                        hintText: '',
                         border: UnderlineInputBorder(),
+                        disabledBorder: UnderlineInputBorder( // Define disabled border style
+                          borderSide: BorderSide(color: Colors.grey), // Set border color for disabled state
+                        ),
+                        suffixIcon: Icon(Icons.edit_off_rounded, color: Colors.grey), // Optional: Add lock icon to indicate disabled state
                       ),
                     ),
-
-                    SizedBox(height: 50,),
-
-
-                    Center(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Checkbox(
-                            value: _privacy,
-                            onChanged: (bool? value) {
-                              if (value != null) {
-                                setState(() {
-                                  _privacy = value;
-                                });
-                              }
-                            },
-                          ),
-                          SizedBox(width: 8), // Adjust the width as needed for spacing between Checkbox and Text
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 14), // Adjust top padding to align with Checkbox
-                                  child: Text(
-                                    'I hereby confirm that all the information I provided to Holy Cross College is true and accurate. I understand that my data will be used for educational purposes only and will be protected according to data privacy laws. I authorize Holy Cross College to collect, process, and store my information.',
-                                    overflow: TextOverflow.clip, // or TextOverflow.ellipsis, or TextOverflow.fade, depending on your preference
-                                  ),
-                                ),
-
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-
-
 
 
                   ],
@@ -422,7 +402,7 @@ class _HomepageState extends State<Homepage> {
 
 
 
-            SizedBox(height: 50,),
+            SizedBox(height: 40,),
 
 
 
@@ -430,25 +410,6 @@ class _HomepageState extends State<Homepage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 120,
-                    height: 40,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Container(
-                        color: Colors.grey  ,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'CANCEL',
-                            style: TextStyle(color: Colors.white,),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(width: 50,),
 
                   Container(
                     width: 120,
@@ -459,7 +420,12 @@ class _HomepageState extends State<Homepage> {
                         color: Colors.green  ,
                         child: TextButton(
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewInformation()));
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => Verify()),
+                                  (route) => false, // Replace all routes until this condition is met (in this case, always return false to replace all routes)
+                            );
+
                           },
                           child: Text(
                             'CONFIRM',
