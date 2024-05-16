@@ -1,12 +1,14 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'success.dart';
 import 'verify.dart';
 import 'viewinfo.dart';
 import 'welcome.dart';
+import 'package:http/http.dart' as http;
+import 'variable.dart';
 
 
 void main(){
@@ -25,6 +27,45 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
 
+  Future <void> uploaduser() async
+  {
+    try
+    {
+      pendingfullname = fullname.text;
+      pendingcourse_year_section = coursegradesec.text;
+      pendinghome_address = address.text;
+      pendingphone_number = phonenumber.text;
+      pendingidentity = _userType.toString().split('.').last;
+      pendingincident_date = _selectedDate?.toIso8601String() ?? '';
+      pendingincident_time = _selectedTime?.format(context) ?? '';
+      pendingincident_location = locationincident.text;
+      pendingincident_description = descriptionincident.text;
+    }
+    catch(e)
+    {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Something Went Wrong'),
+            content: Text('Please try again'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+
+  }
+
+
   bool _privacy = false;
 
   DateTime? _selectedDate;
@@ -36,6 +77,7 @@ class _HomepageState extends State<Homepage> {
   TextEditingController address = TextEditingController();
   TextEditingController phonenumber = TextEditingController();
   TextEditingController dateinput = TextEditingController();
+  TextEditingController descriptionincident = TextEditingController();
   UserType? _userType;
 
 
@@ -369,6 +411,7 @@ class _HomepageState extends State<Homepage> {
                     ),
                     TextField(
                       maxLines: null,
+                      controller: descriptionincident,
                       decoration: InputDecoration(
                         hintText: 'What happened or factors leading to the incident',
                         border: UnderlineInputBorder(),
@@ -459,6 +502,12 @@ class _HomepageState extends State<Homepage> {
                         color: Colors.green  ,
                         child: TextButton(
                           onPressed: () {
+
+                            setState(() {
+
+                              uploaduser();
+
+                            });
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewInformation()));
                           },
                           child: Text(

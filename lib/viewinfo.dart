@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'success.dart';
 import 'verify.dart';
+import 'main.dart';
+import 'variable.dart';
 
 
 enum UserType { student, employee, visitor }
@@ -23,14 +25,15 @@ class _ViewInformationState extends State<ViewInformation> {
   DateTime? _selectedDate;
 
   TimeOfDay? _selectedTime;
-  TextEditingController incidentdescrip = TextEditingController();
-  TextEditingController idenity = TextEditingController();
-  TextEditingController locationincident = TextEditingController();
-  TextEditingController fullname = TextEditingController();
-  TextEditingController coursegradesec = TextEditingController();
-  TextEditingController address = TextEditingController();
-  TextEditingController phonenumber = TextEditingController();
-  TextEditingController dateinput = TextEditingController();
+  TextEditingController incidentdescrip = TextEditingController(text: pendingincident_description);
+  TextEditingController idenity = TextEditingController(text: pendingidentity);
+  TextEditingController locationincident = TextEditingController(text: pendingincident_location);
+  TextEditingController fullname = TextEditingController(text: pendingfullname);
+  TextEditingController coursegradesec = TextEditingController(text: pendingcourse_year_section);
+  TextEditingController address = TextEditingController(text: pendinghome_address);
+  TextEditingController phonenumber = TextEditingController(text: pendingphone_number);
+  TextEditingController dateinput = TextEditingController(text: pendingincident_date);
+  TextEditingController timeinput = TextEditingController(text: pendingincident_time);
   UserType? _userType;
 
   Future<void> _selectDate(BuildContext context) async {
@@ -276,26 +279,20 @@ class _ViewInformationState extends State<ViewInformation> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: () {}, // Disable onTap callback to make it not tappable
-                      child: AbsorbPointer(
-                        child: TextFormField(
-                          readOnly: true, // Set the TextFormField to read-only
-                          decoration: InputDecoration(
-                            hintText: 'Selected Date',
-                            border: UnderlineInputBorder(),
-                            disabledBorder: UnderlineInputBorder( // Define disabled border style
-                              borderSide: BorderSide(color: Colors.grey), // Set border color for disabled state
-                            ),
-                            suffixIcon: Icon(Icons.edit_off_rounded, color: Colors.grey), // Add suffix icon to indicate read-only state
-                          ),
-                          controller: TextEditingController(
-                            text: _selectedDate == null ? '' : _selectedDate.toString().substring(0, 10),
-                          ),
+                    TextField(
+                      readOnly: true, // Make the TextField read-only
+                      maxLines: null,
+                      controller: dateinput,
+                      style: TextStyle(color: Colors.black87), // Set text color to black
+                      decoration: InputDecoration(
+                        hintText: '',
+                        border: UnderlineInputBorder(),
+                        disabledBorder: UnderlineInputBorder( // Define disabled border style
+                          borderSide: BorderSide(color: Colors.grey), // Set border color for disabled state
                         ),
+                        suffixIcon: Icon(Icons.edit_off_rounded, color: Colors.grey), // Optional: Add lock icon to indicate disabled state
                       ),
                     ),
-
 
 
                   ],
@@ -317,23 +314,18 @@ class _ViewInformationState extends State<ViewInformation> {
                         ],
                       ),
                       SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () {}, // Disable onTap callback to make it not tappable
-                        child: AbsorbPointer(
-                          child: TextFormField(
-                            readOnly: true,
-                            decoration: InputDecoration(
-                              hintText: 'Selected Time',
-                              border: UnderlineInputBorder(),
-                              disabledBorder: UnderlineInputBorder( // Define disabled border style
-                                borderSide: BorderSide(color: Colors.grey), // Set border color for disabled state
-                              ),
-                              suffixIcon: Icon(Icons.edit_off_rounded, color: Colors.grey),
-                            ),
-                            controller: TextEditingController(
-                              text: _selectedTime == null ? '' : _selectedTime!.format(context),
-                            ),
+                      TextField(
+                        readOnly: true, // Make the TextField read-only
+                        maxLines: null,
+                        controller: timeinput,
+                        style: TextStyle(color: Colors.black87), // Set text color to black
+                        decoration: InputDecoration(
+                          hintText: '',
+                          border: UnderlineInputBorder(),
+                          disabledBorder: UnderlineInputBorder( // Define disabled border style
+                            borderSide: BorderSide(color: Colors.grey), // Set border color for disabled state
                           ),
+                          suffixIcon: Icon(Icons.edit_off_rounded, color: Colors.grey), // Optional: Add lock icon to indicate disabled state
                         ),
                       ),
 
